@@ -103,6 +103,7 @@ all property of MakeOrderRequest will be validated and every each Sku's property
 ## Expand custom validate
 
 1 Define a custom ValidateRule
+
     @Target(ElementType.FIELD)
     @Retention(RetentionPolicy.RUNTIME)
     public @interface CustomValidate {
