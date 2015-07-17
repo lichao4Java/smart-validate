@@ -100,3 +100,28 @@ all property of MakeOrderRequest will be validated and every each Sku's property
 
     SmartValidate.validate(new MakeOrderRequest());
     
+## Expand custom validate
+
+1 Define a custom ValidateRule
+    @Target(ElementType.FIELD)
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface CustomValidate {
+
+    }
+
+2 Define a custom MatchValidateRule of ValidateRule
+    
+    public class MatchCustomValidate extends AbstractMatchValidate<CustomValidate>{
+
+	@Override
+	public boolean validate(CustomValidate t, String fieldName, Object value)
+			throws ServiceException {
+		
+		// your code 
+                return true;
+	}
+    }
+
+3 Make your custom validate works
+
+    ValidateRulePool.mount(CustomValidate.class, new MatchValidateRule());
