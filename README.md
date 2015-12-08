@@ -1,128 +1,97 @@
-# smart-validate
-This is a Automatic Verification Java Bean Framework
+这是一个服务端参数验证框架，可以对JavaBean中的属性以及方法中参数列表进行验证
+验证规则
 
-Can be used to handle simple and complex verification, has provided 11 kinds of predefined validation rules, and can freely expand the custom validation rules
-
-## A simple JavaBean validate example
-i have a method that require id can not be NULL, you only need 3 steps with smart-validate.
-
-1.write a java bean 
-
-    public class GetById {
-	private String id;
-	public GetById() {
+	MaxLengthValidate       验证最大长度
+	MaxValueValidate	验证最大值	
+	MinLengthValidate	验证最小长度	
+	MinValueValidate	验证最小值	
+	NotNullValidate	        验证非空
+	RangeLengthValidate	验证长度范围	
+	RangeValueValidate	验证值范围	
+	RegexpValidate	        验证正则规则
+ 
+ 
+验证JavaBean的使用方式
+	@ValidateBean
+	class JavaBean{
+	     
+	    @NotNullValidate
+	    private String property1;
+	     
+	    @RangeValueValidate(min="1", max="120")
+	    private Integer property2;
+	 
+	    @MinLengthValidate(length=1)
+	    private List<AnotherJavaBean> list;
+	 
 	}
-	public String getId() {
-		return id;
+
+JavaBean中包含的对象或者集合中包含的对象可递归验证
+
+	@ValidateBean
+	class AnotherJavaBean{
+	     
+	    @NotNullValidate
+	    private String subProperty1;
+	     
+	    @RangeValueValidate(min="1", max="120")
+	    private Integer subProperty2;
+	 
 	}
-	public void setId(String id) {
-		this.id = id;
+ 
+验证方法参数的使用方式
+
+	public void method(
+	           @ValidateArgument(
+	                   notNull=@NotNullValidate,
+	                   maxLength=@MaxLengthValidate(length=1)
+	           )
+	           /** 验证单个参数 **/ 
+	           String argument,
+	           /** 验证JavaBean **/
+	           JavaBean javaBean) {
+	    
+	 }
+ 
+配置
+	<aop:config>
+	        <!-- pointcut 配置成需要拦截的路径 -->
+	        <aop:advisor pointcut="execution(*.*(..))" advice-ref="smartValidateInterceptor"/>
+	    </aop:config>
+	<bean id="smartValidateInterceptor" class="com.smart.validate.interceptor.SmartValidateInterceptor" />
+ 
+拓展
+1 定义自己的验证注解
+
+	@Target(ElementType.FIELD)
+	@Retention(RetentionPolicy.RUNTIME)
+	public @interface CustomerValidate {
+	    String message () default "";
+	     
+	    String name () default "";
+	     
 	}
-    }
+ 
+2 实现自定义验证规则
 
+	public class MatchCustomerValidate extends AbstractMatchValidate<CustomerValidate >{
+	    @Override
+	    public void validate(CustomerValidate t,
+	            String fieldName,
+	            Object value)
+	            throws SmartValidateException {
+	             
+	        //your code
+	    }
+ 
+3 生效自定义验证规则
 
-2.Add com.smart.validate.Validate annotation on Class, Add com.smart.validate.rule.NotNullValidate annotation on id field it looks like:
+	ValidateRulePool.mount(CustomerValidate.class, new MatchCustomerValidate());
+ 
+Maven依赖
 
-    import com.smart.validate.Validate;
-    import com.smart.validate.rule.NotNullValidate;
-
-    @Validate
-    public class GetById {
-	@NotNullValidate
-	private String id;
-	public GetById() {
-	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
-    }
-3.Now we can run it!
-
-    SmartValidate.validate(new GetById());
-
-## A complex JavaBean validate example
-we simulate a request for a multiple levels structure submission
-
-1 Define a simple multiple levels structure with smart-validate annotation 
-
-    @Validate
-    public class MakeOrderRequest {
-
-	@NotNullValidate
-	private String userId;
-
-	@NotNullValidate
-	private List<Sku> skus;
-
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	public List<Sku> getSkus() {
-		return skus;
-	}
-	public void setSkus(List<Sku> skus) {
-		this.skus = skus;
-	}
-    }
-
-    @Validate
-    public class Sku {
-
-	@NotNullValidate
-	private String skuId;
-	
-	@MinValueValidate(value="1")
-	private Integer buyNum;
-	
-	public String getSkuId() {
-		return skuId;
-	}
-	public void setSkuId(String skuId) {
-		this.skuId = skuId;
-	}
-	public Integer getBuyNum() {
-		return buyNum;
-	}
-	public void setBuyNum(Integer buyNum) {
-		this.buyNum = buyNum;
-	}
-    }
-
-all property of MakeOrderRequest will be validated and every each Sku's property also will be validated
-
-2.Now we can run it!
-
-    SmartValidate.validate(new MakeOrderRequest());
-    
-## Expand custom validate
-
-1 Define a custom ValidateRule
-
-    @Target(ElementType.FIELD)
-    @Retention(RetentionPolicy.RUNTIME)
-    public @interface CustomValidate {
-
-    }
-
-2 Define a custom MatchValidateRule of ValidateRule
-    
-    public class MatchCustomValidate extends AbstractMatchValidate<CustomValidate>{
-
-	@Override
-	public boolean validate(CustomValidate t, String fieldName, Object value)
-			throws ServiceException {
-		
-		// your code 
-                return true;
-	}
-    }
-
-3 Make your custom validate works
-
-    ValidateRulePool.mount(CustomValidate.class, new MatchValidateRule());
+	<dependency>
+	    <groupId>com.smart.validate</groupId>
+	    <artifactId>smart-validate</artifactId>
+	    <version>1.1-SNAPSHOT</version>
+	</dependency>
