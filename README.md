@@ -2,14 +2,14 @@
 
 <h1>默认支持的验证规则</h1>
 
-	MaxLengthValidate       验证最大长度
-	MaxValueValidate	验证最大值	
-	MinLengthValidate	验证最小长度	
-	MinValueValidate	验证最小值	
-	NotNullValidate	        验证非空
-	RangeLengthValidate	验证长度范围	
-	RangeValueValidate	验证值范围	
-	RegexpValidate	        验证正则规则
+	MaxLengthValidate               验证最大长度
+	MaxValueValidate	        验证最大值	
+	MinLengthValidate        	验证最小长度	
+	MinValueValidate        	验证最小值	
+	NotNullValidate	                验证非空
+	RangeLengthValidate	        验证长度范围	
+	RangeValueValidate	        验证值范围	
+	RegexpValidate	                验证正则规则
  
  
 <h1>验证JavaBean</h1>
@@ -27,7 +27,7 @@
 	 
 	    //集合的长度验证
 	    @MinLengthValidate(length=1)
-	    //JavaBean中包含的对象或者集合中包含的对象可递归验证
+	    //list中的AnotherJavaBean对象会递归验证
 	    private List<AnotherJavaBean> list;
 	 
 	}
@@ -64,11 +64,13 @@
 	 }
  
 2 配置
+
 	<aop:config>
-	        <!-- pointcut 配置成需要拦截的路径 -->
-	        <aop:advisor pointcut="execution(*.*(..))" advice-ref="smartValidateInterceptor"/>
-	    </aop:config>
+		<!-- pointcut 配置成需要拦截的路径 -->
+		<aop:advisor pointcut="execution(*.*(..))" advice-ref="smartValidateInterceptor"/>
+	</aop:config>
 	<bean id="smartValidateInterceptor" class="com.smart.validate.interceptor.SmartValidateInterceptor" />
+	
  
 <h1>拓展</h1>
 
