@@ -2,14 +2,14 @@
 
 <h1>默认支持的验证规则</h1>
 
-	MaxLengthValidate               验证最大长度
+	MaxLengthValidate           验证最大长度
 	MaxValueValidate	        验证最大值	
 	MinLengthValidate        	验证最小长度	
 	MinValueValidate        	验证最小值	
-	NotNullValidate	                验证非空
+	NotNullValidate	            验证非空
 	RangeLengthValidate	        验证长度范围	
 	RangeValueValidate	        验证值范围	
-	RegexpValidate	                验证正则规则
+	RegexpValidate	            验证正则规则
  
  
 <h1>验证JavaBean</h1>
