@@ -2,7 +2,6 @@ package com.smart.validate;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -11,31 +10,21 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.smart.validate.exception.SmartValidateException;
-import com.smart.validate.match.AbstractMatchValidate;
 
 /**
- * 
-MaxLengthValidate
-MaxValueValidate
-MinLengthValidate
-MinValueValidate
-NotNullValidate
-RangeLengthValidate
-RangeValueValidate
-RegexpValidate
- * 
+ * 验证Object
  * @author lichao
  *
  */
-public class SmartValidate {
+public class SmartValidateBean extends SmartValidateObject {
 
-	private static final SmartValidate self = new SmartValidate();
-	
-	public static void validate(Object target) throws SmartValidateException {
+	public void validateBean(Object bean) throws SmartValidateException {
 
-		if(target == null) { return; }
+		if(bean == null) {
+			return;
+		}
 		
-		self.recursiveUnitlPrimitiveType(target, target.getClass());
+		recursiveUnitlPrimitiveType(bean, bean.getClass());
 	}
 	
 	private void recursiveUnitlPrimitiveType(Object target, Class<?> clazz) throws  SmartValidateException {
@@ -63,8 +52,8 @@ public class SmartValidate {
 				
 				Object value = pd.getReadMethod().invoke(target);
 				
-				validateField(field, value);
-				
+				validateObject(field.getName(), value, field.getAnnotations());
+
 				if(value == null) {
 					continue;
 				}
@@ -115,21 +104,7 @@ public class SmartValidate {
 	
 	private boolean isSmartValidateJavaBean(Class<?> clazz) {
 		
-		return clazz.getAnnotation(Validate.class) != null;
+		return clazz.getAnnotation(ValidateBean.class) != null;
 		
-	}
-	
-	private void validateField(Field field , Object value) throws SmartValidateException {
-		
-		for(Annotation anno : field.getAnnotations()) {
-			
-			AbstractMatchValidate matchValidate = ValidateRulePool.get(anno.annotationType());
-			
-			if(matchValidate == null) { continue; }
-			
-			matchValidate.validate(anno, field.getName(), value);
-			
-		}
-
 	}
 }

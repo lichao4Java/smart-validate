@@ -1,50 +1,48 @@
 package com.smart.validate.match;
 
 import com.smart.validate.exception.SmartValidateException;
-import com.smart.validate.rule.MinValueValidate;
+import com.smart.validate.rule.MaxValueValidate;
 
 /**
- * 最小值
+ * 基本数据类型最大值
+ * Null满足条件
  * @author lichao
  *
  */
-public class MatchMinValueValidate extends AbstractMatchValidate<MinValueValidate>{
+public class MatchMaxValueValidate extends AbstractMatchValidate<MaxValueValidate>{
 
 	@Override
-	public boolean validate(MinValueValidate t, 
+	public void validate(MaxValueValidate t, 
 			String fieldName,
 			Object value)
 			throws SmartValidateException {
 		
-		String defaultMessage = "%s的值不能小于%s";
-
 		if(value == null) {
 			
-			throw new SmartValidateException(
-					getMessage(t.message(), defaultMessage, getName(t.name(), fieldName), t.value()));
-			
+			return;
 		}
 		
+		String defaultMessage = "%s的值不能大于%s";
+
 		if(value instanceof Integer || value instanceof Long || value instanceof Byte || value instanceof Short) {
 			
 			Long v = Long.parseLong(value.toString());
 			
-			Long min = Long.parseLong(t.value());
+			Long max = Long.parseLong(t.value());
 			
-			if(v < min) {
+			if(v > max) {
 				
 				throw new SmartValidateException(
 						getMessage(t.message(), defaultMessage, getName(t.name(), fieldName), t.value()));
-				
 			}
 			
 		} else if(value instanceof Double || value instanceof Float) {
 			
 			Double v = Double.parseDouble(value.toString());
 			
-			Double min = Double.parseDouble(t.value());
+			Double max = Double.parseDouble(t.value());
 			
-			if(v < min) {
+			if(v > max) {
 				
 				throw new SmartValidateException(
 						getMessage(t.message(), defaultMessage, getName(t.name(), fieldName), t.value()));
@@ -53,10 +51,8 @@ public class MatchMinValueValidate extends AbstractMatchValidate<MinValueValidat
 			
 		} else {
 			
-			throw new SmartValidateException("MinValueValidate only support int|long|byte|short|double|float");
+			throw new SmartValidateException("MaxValueValidate only support int|long|byte|short|double|float");
 			
 		}
-		return true;
 	}
-	
 }

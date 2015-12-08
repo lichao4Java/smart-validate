@@ -12,7 +12,7 @@ import com.smart.validate.rule.NotNullValidate;
 public class MatchNotNullValidate extends AbstractMatchValidate<NotNullValidate>{
 
 	@Override
-	public boolean validate(NotNullValidate t,
+	public void validate(NotNullValidate t,
 			String fieldName,
 			Object value) throws SmartValidateException {
 		
@@ -25,6 +25,5 @@ public class MatchNotNullValidate extends AbstractMatchValidate<NotNullValidate>
 			
 		}
 		
-		return true;
 	}
 }

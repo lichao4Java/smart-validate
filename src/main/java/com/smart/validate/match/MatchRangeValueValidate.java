@@ -11,7 +11,7 @@ import com.smart.validate.rule.RangeValueValidate;
 public class MatchRangeValueValidate extends AbstractMatchValidate<RangeValueValidate>{
 
 	@Override
-	public boolean validate(RangeValueValidate t,
+	public void validate(RangeValueValidate t,
 			String fieldName,
 			Object value)
 			throws SmartValidateException {
@@ -56,6 +56,5 @@ public class MatchRangeValueValidate extends AbstractMatchValidate<RangeValueVal
 			throw new SmartValidateException("RangeValueValidate only support int|long|byte|short|double|float");
 			
 		}
-		return true;
 	}
 }

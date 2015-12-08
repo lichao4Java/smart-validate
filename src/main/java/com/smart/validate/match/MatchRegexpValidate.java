@@ -13,7 +13,7 @@ import com.smart.validate.rule.RegexpValidate;
 public class MatchRegexpValidate extends AbstractMatchValidate<RegexpValidate>{
 
 	@Override
-	public boolean validate(RegexpValidate t, 
+	public void validate(RegexpValidate t, 
 			String fieldName,
 			Object value)
 			throws SmartValidateException {
@@ -27,6 +27,5 @@ public class MatchRegexpValidate extends AbstractMatchValidate<RegexpValidate>{
 			
 		}
 		
-		return false;
 	}
 }
