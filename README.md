@@ -277,7 +277,7 @@ private Integer age;
 
 <a name="oEIIG"></a>
 # 最佳实践
-不论是Spring MVC的REST API参数，还是RPC中的对象入参，一般都会有相应的拦截器去处理日志打印、异常等相关的逻辑，因此参数验证也可以在这一层中使用SmartValidate.validate方法来统一接入，框架中也内置了Spring了SmartValidateInterceptor拦截器，也可以自己跟实际情况来实现自己的验证策略。<br />
+不论是Spring MVC的REST API参数，还是RPC中的对象入参，一般都会有相应的拦截器去处理日志打印、异常等相关的逻辑，因此参数验证也可以在这一层中使用SmartValidate.validate方法来统一接入，框架中也内置了基于Spring的SmartValidateInterceptor拦截器，也可以自己跟实际情况来实现自己的验证策略。<br />
 
 <a name="TGfet"></a>
 # 源码
