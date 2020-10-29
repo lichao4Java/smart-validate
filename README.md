@@ -239,7 +239,7 @@ ValidateRulePool.mount(CustomerValidate.class, new MatchCustomerValidate());
 
 <a name="ZiiCd"></a>
 ## 使用多个验证规则
-不论时是参数列表还是对象验证，都每个字段都可以支持多个验证规则。<br />
+不论是参数列表还是对象中的字段，都可以同时支持多个验证规则。<br />
 <br />（一）对象参数
 ```java
 @NotNullValidate
